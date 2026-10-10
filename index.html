@@ -1,0 +1,1528 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08070c">
+<title>Lumen 流光歌詞</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<style>
+/* ───────────── Tokens ───────────── */
+:root{
+  --bg:#eee8df; --ink-rgb:22,18,28; --muted:rgba(22,18,28,.62); --faint:rgba(22,18,28,.1);
+  --panel:rgba(255,255,255,.74); --panel-line:rgba(22,18,28,.08); --accent:#5a3fd0;
+  --vignette:rgba(255,255,255,.3); --un:.3; --glow:0; --scrim:rgba(30,20,40,.25);
+  --art-shadow:0 28px 60px -26px rgba(40,24,64,.5);
+  --spotify:#1ed760; --spotify-ink:#03140a; --danger:#e5484d;
+  --ui:"Plus Jakarta Sans","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#08070c; --ink-rgb:255,255,255; --muted:rgba(255,255,255,.64); --faint:rgba(255,255,255,.12);
+    --panel:rgba(14,12,22,.74); --panel-line:rgba(255,255,255,.09); --accent:#a9d4ff;
+    --vignette:rgba(0,0,0,.55); --un:.4; --glow:1; --scrim:rgba(0,0,0,.45);
+    --art-shadow:0 34px 80px -22px rgba(0,0,0,.75); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#08070c; --ink-rgb:255,255,255; --muted:rgba(255,255,255,.64); --faint:rgba(255,255,255,.12);
+  --panel:rgba(14,12,22,.74); --panel-line:rgba(255,255,255,.09); --accent:#a9d4ff;
+  --vignette:rgba(0,0,0,.55); --un:.4; --glow:1; --scrim:rgba(0,0,0,.45);
+  --art-shadow:0 34px 80px -22px rgba(0,0,0,.75); color-scheme:dark;
+}
+
+/* ───────────── Base ───────────── */
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:rgb(var(--ink-rgb));font-family:var(--ui);overflow:hidden;
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input{font:inherit;color:inherit;-webkit-user-select:text;user-select:text}
+code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+[hidden]{display:none!important}
+
+#aurora{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.veil{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 110% at 62% 42%,transparent 38%,var(--vignette) 100%)}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.eco .grain{display:none}
+
+#app{position:fixed;inset:0;z-index:2}
+.view{position:absolute;inset:0;display:none}
+#app[data-view="setup"] #setup,#app[data-view="phone"] #phone,#app[data-view="player"] #player{display:grid}
+#app[data-view="boot"]::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px;border-radius:50%;
+  border:3px solid var(--faint);border-top-color:rgb(var(--ink-rgb));animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.card{background:var(--panel);border:1px solid var(--panel-line);border-radius:30px;box-shadow:0 40px 100px -40px rgba(0,0,0,.45)}
+.hq .card{-webkit-backdrop-filter:blur(26px) saturate(1.3);backdrop-filter:blur(26px) saturate(1.3)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 26px;border-radius:999px;
+  font-weight:700;font-size:17px;background:var(--faint);transition:transform .2s,background .2s,opacity .2s;white-space:nowrap}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.55}
+.btn.primary{background:rgb(var(--ink-rgb));color:var(--bg)}
+.btn.spotify{background:var(--spotify);color:var(--spotify-ink)}
+.btn.quiet{background:transparent;color:var(--muted)}
+.btn.wide{width:100%}
+.muted{color:var(--muted)}
+
+/* ───────────── Setup (car) ───────────── */
+#setup{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;gap:clamp(28px,5vw,96px);padding:clamp(28px,5.5vw,104px)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:13px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted)}
+.mark{width:26px;height:26px;border-radius:8px;flex:none;background:conic-gradient(from 200deg,#ff9a62,#ff4f7e,#9a63ff,#3cc8ff,#ff9a62);box-shadow:0 0 28px rgba(154,99,255,.55)}
+.hero-title{margin:.26em 0 .2em;font-size:clamp(56px,8vw,136px);font-weight:900;letter-spacing:-.035em;line-height:1;
+  background:linear-gradient(100deg,rgb(var(--ink-rgb)) 0%,rgb(var(--ink-rgb)) 38%,var(--accent) 50%,rgb(var(--ink-rgb)) 62%,rgb(var(--ink-rgb)) 100%);
+  background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 7s ease-in-out infinite}
+@keyframes sheen{0%,15%{background-position:100% 0}60%,100%{background-position:0 0}}
+.hero-ly{margin:0 0 .9em;font-size:clamp(22px,2.5vw,40px);font-weight:800;letter-spacing:-.01em;line-height:1.3;
+  background:linear-gradient(90deg,rgb(var(--ink-rgb)) 0 46%,rgba(var(--ink-rgb),.26) 54% 100%);background-size:240% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:fillhero 5.5s cubic-bezier(.45,0,.35,1) infinite}
+@keyframes fillhero{0%{background-position:100% 0}72%,100%{background-position:0 0}}
+.lede{max-width:30em;margin:0;font-size:clamp(16px,1.45vw,22px);line-height:1.65;color:var(--muted);font-weight:500}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(24px,3.4vw,48px)}
+.pair{justify-self:center;width:min(100%,430px);padding:clamp(22px,2.4vw,34px);display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;position:relative}
+.qr{position:relative;width:min(280px,36vh);aspect-ratio:1;border-radius:22px;background:#fff;padding:16px;transition:filter .5s,transform .5s}
+.qr svg{display:block;width:100%;height:100%}
+.qr .scan{position:absolute;inset:10px;border-radius:14px;overflow:hidden;pointer-events:none}
+.qr .scan::after{content:"";position:absolute;left:0;right:0;height:34%;top:-34%;background:linear-gradient(180deg,transparent,rgba(120,90,255,.13),transparent);animation:scan 3.4s ease-in-out infinite}
+@keyframes scan{to{top:100%}}
+.qr-fallback{display:grid;place-items:center;height:100%;color:#333;font-size:13px;line-height:1.5;text-align:center;word-break:break-all}
+.pair h2{margin:2px 0 0;font-size:clamp(20px,1.8vw,26px);font-weight:800;letter-spacing:-.01em}
+.pair p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
+.status{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--muted);padding:9px 15px;border-radius:99px;background:var(--faint)}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:ping 1.8s ease-out infinite}
+.status.ok{color:rgb(var(--ink-rgb))} .status.ok i{background:var(--spotify);animation:none}
+.status.err i{background:var(--danger);animation:none}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(var(--ink-rgb),.45)}100%{box-shadow:0 0 0 12px rgba(var(--ink-rgb),0)}}
+.pair.linked .qr{filter:blur(6px) saturate(.4);transform:scale(.94)}
+.linked-badge{position:absolute;left:50%;top:clamp(22px,2.4vw,34px);width:min(280px,36vh);aspect-ratio:1;transform:translateX(-50%);display:grid;place-items:center;pointer-events:none}
+.linked-badge svg{width:46%;height:46%}
+.linked-badge circle{fill:var(--spotify)}
+.linked-badge path{fill:none;stroke:#062012;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:draw .6s .25s ease forwards}
+.linked-badge svg{animation:pop .5s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+
+/* ───────────── Phone pairing ───────────── */
+#phone{place-items:center;padding:20px;overflow:auto}
+.pcard{width:min(100%,440px);padding:30px 24px 26px;text-align:center}
+.pcard h2{margin:18px 0 8px;font-size:25px;font-weight:800;letter-spacing:-.01em}
+.pc-sub{margin:0 0 6px;color:var(--muted);line-height:1.6;font-size:15px}
+.pcard .btn{margin-top:18px}
+.fine{margin:16px 0 0;font-size:12.5px;color:var(--muted);line-height:1.55}
+.link-art{width:180px;height:72px;margin:0 auto;display:block}
+.link-art rect{fill:none;stroke:rgb(var(--ink-rgb));stroke-width:2.4;opacity:.8}
+.link-art .d{fill:var(--accent);animation:hop 1.6s ease-in-out infinite}
+.link-art .d:nth-of-type(2){animation-delay:.2s}.link-art .d:nth-of-type(3){animation-delay:.4s}
+@keyframes hop{0%,100%{opacity:.2}50%{opacity:1}}
+.done-art{width:96px;height:96px;margin:0 auto;display:block}
+.done-art circle{fill:var(--spotify)} .done-art path{fill:none;stroke:#062012;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:70;stroke-dashoffset:70;animation:draw .7s .2s ease forwards}
+.done-art{animation:pop .55s cubic-bezier(.2,1.6,.4,1) both}
+.field{display:block;margin-top:18px;text-align:left}
+.field span{display:block;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.04em;margin-bottom:8px}
+.field input{width:100%;min-height:54px;padding:0 16px;border-radius:14px;border:1.5px solid var(--panel-line);background:var(--faint);font-size:16px;
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.02em;outline:none}
+.field input:focus{border-color:var(--accent)}
+.field.bad input{border-color:var(--danger)}
+details.help{margin-top:16px;text-align:left;border-radius:16px;background:var(--faint);padding:2px 16px}
+details.help summary{cursor:pointer;padding:13px 0;font-weight:700;font-size:15px;list-style:none}
+details.help summary::-webkit-details-marker{display:none}
+details.help summary::after{content:"＋";float:right;color:var(--muted)}
+details.help[open] summary::after{content:"－"}
+.spin{width:40px;height:40px;margin:26px auto 4px;border-radius:50%;border:3px solid var(--faint);border-top-color:var(--accent);animation:spin 1s linear infinite}
+
+/* ───────────── Steps / copy (sheet + phone) ───────────── */
+.steps{counter-reset:s;list-style:none;padding:0;margin:16px 0 4px}
+.steps li{counter-increment:s;position:relative;padding:0 0 18px 44px;line-height:1.6;font-size:14.5px;color:var(--muted)}
+.steps li::before{content:counter(s);position:absolute;left:0;top:-1px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  background:var(--faint);color:rgb(var(--ink-rgb));font-weight:800;font-size:14px}
+.steps b{display:block;color:rgb(var(--ink-rgb));font-size:15.5px;margin-bottom:2px}
+.steps code{font-size:13px;color:rgb(var(--ink-rgb))}
+.copyrow{display:flex;gap:8px;align-items:center;margin-top:8px;padding:6px 6px 6px 12px;border-radius:12px;background:var(--faint)}
+.copyrow code{flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere;color:rgb(var(--ink-rgb))}
+.copyrow button{flex:none;padding:9px 13px;border-radius:9px;background:rgb(var(--ink-rgb));color:var(--bg);font-weight:700;font-size:13px}
+.note{margin:14px 0 0;padding:12px 14px;border-radius:14px;background:var(--faint);font-size:14px;line-height:1.6;color:rgb(var(--ink-rgb))}
+
+/* ───────────── Player ───────────── */
+#app{--fs:clamp(26px,min(4vw,6.6vh),68px)}
+#app[data-size="s"]{--fs:clamp(22px,min(3.2vw,5.4vh),54px)}
+#app[data-size="l"]{--fs:clamp(30px,min(4.8vw,8vh),84px)}
+#app[data-size="xl"]{--fs:clamp(34px,min(5.8vw,9.6vh),100px)}
+#player{grid-template-columns:minmax(240px,30%) minmax(0,1fr);gap:clamp(28px,4.4vw,84px);padding:clamp(20px,3.6vw,64px) clamp(24px,4vw,72px)}
+.np{align-self:center;display:flex;flex-direction:column;gap:clamp(16px,2.4vh,28px);min-width:0;transition:opacity .6s}
+.art{position:relative;width:min(100%,50vh);aspect-ratio:1;flex:none}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:clamp(12px,1.2vw,20px);box-shadow:var(--art-shadow);
+  transition:opacity .5s ease,transform .9s cubic-bezier(.2,.9,.25,1);background:var(--faint)}
+.art img.out{opacity:0;transform:scale(.94)}
+.paused .art img{transform:scale(.93)}
+.halo{position:absolute;inset:10% 6% -7%;border-radius:30%;background-size:cover;background-position:center;filter:blur(44px) saturate(1.6);opacity:.55;z-index:-1}
+.eco .halo{display:none}
+.meta{min-width:0}
+.np-title{font-size:clamp(19px,1.9vw,32px);font-weight:800;letter-spacing:-.01em;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.np-artist{margin-top:6px;font-size:clamp(14px,1.25vw,21px);font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.swap .np-title,.swap .np-artist{animation:rise .7s cubic-bezier(.2,.9,.25,1) both}
+.swap .np-artist{animation-delay:.06s}
+.bar{margin-top:clamp(14px,2.2vh,24px);height:5px;border-radius:9px;background:var(--faint);overflow:hidden}
+.bar i{display:block;height:100%;transform-origin:0 50%;transform:scaleX(0);background:rgb(var(--ink-rgb));opacity:.92;border-radius:inherit}
+.times{display:flex;justify-content:space-between;margin-top:9px;font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.src{margin-top:12px;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--muted);opacity:.75;display:flex;align-items:center;gap:8px}
+.src .off{display:none;color:var(--danger)}
+.net-off .src .off{display:inline}
+.paused-chip{display:none;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--muted)}
+.paused .paused-chip{display:inline-flex}
+
+.ly{position:relative;min-width:0;min-height:0}
+.ly-view{position:absolute;top:0;right:0;bottom:0;left:-28px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 72%,transparent 100%)}
+.ly-track{position:relative;padding:0 2% 0 28px}
+.enter{animation:rise .8s cubic-bezier(.2,.9,.25,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}}
+
+.item{font-size:var(--fs);margin:0 0 .46em;transform-origin:0 50%;
+  transform:translate3d(0,var(--y,0px),0) scale(var(--s,.94));opacity:var(--o,.13);filter:blur(var(--b,0px));
+  transition:transform .85s cubic-bezier(.2,.85,.25,1),opacity .55s ease,filter .55s ease}
+.eco .item{filter:none}
+.instant .item{transition:none!important}
+.item[data-d="0"]{--o:1;--b:0px;--s:1}
+.item[data-d="1"]{--o:.5;--b:0px;--s:.96}
+.item[data-d="2"]{--o:.34;--b:.7px;--s:.955}
+.item[data-d="3"]{--o:.24;--b:1.4px;--s:.95}
+.item[data-d="4"]{--o:.18;--b:2.2px;--s:.945}
+.item[data-d="5"]{--o:.13;--b:3px;--s:.94}
+.item[data-d="-1"]{--o:.36;--b:.4px;--s:.96}
+.item[data-d="-2"]{--o:.24;--b:1.1px;--s:.955}
+.item[data-d="-3"]{--o:.17;--b:1.8px;--s:.95}
+.item[data-d="-4"]{--o:.12;--b:2.6px;--s:.945}
+.item[data-d="-5"]{--o:.08;--b:3px;--s:.94}
+.line{font-weight:800;line-height:1.24;letter-spacing:-.012em;cursor:pointer;overflow-wrap:anywhere}
+.line .main{display:block}
+.u{display:inline-block;white-space:pre}
+.line.active .u{color:transparent;-webkit-background-clip:text;background-clip:text;
+  background-image:linear-gradient(90deg,rgb(var(--ink-rgb)) 0,rgb(var(--ink-rgb)) calc(var(--p,0)*125% - 25%),rgba(var(--ink-rgb),var(--un)) calc(var(--p,0)*125%),rgba(var(--ink-rgb),var(--un)) 100%);
+  transform:translateY(calc(var(--p,0)*-.045em))}
+.hq .line.active .u.glow{filter:drop-shadow(0 0 calc(var(--g,0)*.3em) rgba(var(--ink-rgb),calc(var(--g,0)*var(--glow)*.6)))}
+.line .sub{display:block;margin-top:.24em;font-size:.5em;font-weight:600;letter-spacing:0;line-height:1.32;opacity:.72}
+.no-trans .line .sub{display:none}
+.line.credit{font-size:calc(var(--fs)*.42);font-weight:700;letter-spacing:.05em;cursor:default}
+.line.credit .u{background:none!important;color:rgb(var(--ink-rgb))!important;transform:none!important}
+.line.plain{cursor:default;opacity:.82;font-size:calc(var(--fs)*.8);transform:none;filter:none}
+.line.blank{height:.5em}
+.line.tap{animation:tap .45s ease}
+@keyframes tap{40%{opacity:1}}
+.gap{height:1.15em;display:flex;align-items:center}
+.gap .dots{display:flex;gap:.3em;align-items:center;padding-left:.04em;transform-origin:0 50%}
+#app[data-layout="immersive"] .gap .dots{transform-origin:50% 50%}
+.gap i{width:.3em;height:.3em;border-radius:50%;background:rgb(var(--ink-rgb));opacity:calc(.25 + var(--p,0)*.75);transform:scale(calc(.72 + var(--p,0)*.4));transition:transform .4s,opacity .4s}
+.gap.active .dots{animation:breathe 2.4s ease-in-out infinite}
+.gap.ending i{transform:scale(0)!important;opacity:0!important}
+@keyframes breathe{50%{transform:scale(1.14)}}
+
+.ly-state{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding-bottom:6vh}
+.st-title{font-size:calc(var(--fs)*1.1);font-weight:900;letter-spacing:-.025em;line-height:1.08;overflow-wrap:anywhere}
+.st-artist{font-size:calc(var(--fs)*.46);color:var(--muted);font-weight:700;margin-top:.35em}
+.st-note{margin-top:1.8em;font-size:clamp(15px,1.35vw,21px);font-weight:700;color:var(--muted);display:flex;gap:12px;align-items:center}
+.ly-state.tappable{cursor:pointer}
+.shimmer{background:linear-gradient(90deg,var(--muted) 0 40%,rgb(var(--ink-rgb)) 50%,var(--muted) 60% 100%);background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:shim 2.2s linear infinite}
+@keyframes shim{from{background-position:100% 0}to{background-position:0 0}}
+.eq{display:inline-flex;gap:4px;align-items:flex-end;height:20px}
+.eq i{width:4px;height:100%;border-radius:2px;background:var(--accent);transform-origin:bottom;animation:eq 1.1s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:-.4s}.eq i:nth-child(3){animation-delay:-.7s}.eq i:nth-child(4){animation-delay:-.2s}
+@keyframes eq{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+
+.idle{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px}
+#app[data-ly="idle"] .idle{display:flex}
+#app[data-ly="idle"] .np,#app[data-ly="idle"] .ly{opacity:0;pointer-events:none}
+.clock{font-size:clamp(88px,15vw,240px);font-weight:800;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
+.date{font-size:clamp(18px,1.8vw,28px);font-weight:700;color:var(--muted)}
+.idle-note{margin-top:30px;color:var(--muted);font-size:clamp(15px,1.3vw,19px);font-weight:600;display:flex;align-items:center;gap:10px}
+
+/* Immersive layout */
+#app[data-layout="immersive"]{--fs-mul:1.1}
+#app[data-layout="immersive"] #player{grid-template-columns:minmax(0,1fr);padding-bottom:calc(clamp(20px,3.6vw,64px) + 76px)}
+#app[data-layout="immersive"] .np{position:absolute;left:clamp(20px,3vw,48px);bottom:clamp(16px,3vh,32px);flex-direction:row;align-items:center;gap:16px;width:min(560px,calc(100% - 40px))}
+#app[data-layout="immersive"] .art{width:64px}
+#app[data-layout="immersive"] .halo,#app[data-layout="immersive"] .times,#app[data-layout="immersive"] .src{display:none}
+#app[data-layout="immersive"] .meta{flex:1}
+#app[data-layout="immersive"] .np-title{font-size:17px;-webkit-line-clamp:1}
+#app[data-layout="immersive"] .np-artist{font-size:14px;margin-top:2px}
+#app[data-layout="immersive"] .bar{margin-top:10px;height:4px}
+#app[data-layout="immersive"] .item{font-size:calc(var(--fs)*1.1);transform-origin:50% 50%}
+#app[data-layout="immersive"] .ly-track{text-align:center;padding:0 5%}
+#app[data-layout="immersive"] .gap{justify-content:center}
+#app[data-layout="immersive"] .ly-state{align-items:center;text-align:center}
+
+/* HUD */
+.hud{position:fixed;left:50%;bottom:clamp(16px,3vh,32px);z-index:5;display:flex;align-items:center;gap:4px;padding:8px;border-radius:999px;
+  transform:translate(-50%,28px);opacity:0;pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.2,.9,.25,1)}
+.hud.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.hud button{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;transition:background .2s,transform .2s}
+.hud button:active{background:var(--faint);transform:scale(.92)}
+.hud .big{width:74px;height:74px;background:rgb(var(--ink-rgb));color:var(--bg)}
+.hud svg{width:28px;height:28px}
+.hud .sep{width:1px;height:34px;background:var(--panel-line);margin:0 6px;flex:none}
+.hud .offg{display:flex;align-items:center}
+.hud .offg button{width:50px;font-size:24px;font-weight:700}
+.hud output{min-width:70px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums;font-size:15px;line-height:1.15}
+.hud output small{display:block;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em}
+
+.toast{position:fixed;top:clamp(14px,2.4vh,26px);left:50%;z-index:9;transform:translate(-50%,-160%);padding:13px 22px;border-radius:999px;
+  font-weight:700;font-size:15px;transition:transform .45s cubic-bezier(.2,.9,.25,1);max-width:min(92vw,640px);text-align:center;line-height:1.4}
+.toast:not(.show){visibility:hidden;transition:transform .45s cubic-bezier(.2,.9,.25,1),visibility 0s .45s}
+.toast.show{transform:translate(-50%,0)}
+.hud-on[data-layout="immersive"] .np{opacity:0}
+.badge{position:fixed;top:14px;left:14px;z-index:6;display:flex;align-items:center;gap:10px;padding:6px 6px 6px 16px;border-radius:999px;font-size:13px;font-weight:700}
+.badge button{padding:8px 14px;border-radius:999px;background:rgb(var(--ink-rgb));color:var(--bg);font-size:12.5px;font-weight:800}
+
+/* Sheet */
+.sheet-back{position:fixed;inset:0;z-index:7;background:var(--scrim);opacity:0;pointer-events:none;transition:opacity .35s}
+.sheet-open .sheet-back{opacity:1;pointer-events:auto}
+.sheet{position:fixed;z-index:8;top:16px;right:16px;bottom:16px;width:min(480px,calc(100vw - 32px));overflow:auto;padding:30px 28px 28px;
+  transform:translateX(calc(100% + 40px));transition:transform .45s cubic-bezier(.2,.9,.25,1);-webkit-user-select:text;user-select:text;overscroll-behavior:contain}
+.sheet-open .sheet{transform:none}
+.sheet h2{margin:0 0 6px;font-size:25px;font-weight:800;letter-spacing:-.01em;padding-right:50px}
+.sheet .x{position:absolute;top:18px;right:18px;width:46px;height:46px;border-radius:50%;background:var(--faint);font-size:24px;line-height:1}
+.opt{margin-top:24px}
+.opt>label{display:block;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin-bottom:10px}
+.seg{display:flex;gap:6px;padding:5px;border-radius:16px;background:var(--faint)}
+.seg button{flex:1;min-height:48px;border-radius:12px;font-weight:700;font-size:15px;color:var(--muted);transition:background .2s,color .2s}
+.seg button[aria-pressed="true"]{background:rgb(var(--ink-rgb));color:var(--bg)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row .btn{min-height:50px;font-size:15px;padding:0 20px}
+.about{margin-top:26px;font-size:12.5px;line-height:1.6;color:var(--muted)}
+
+@media (max-aspect-ratio: 9/10){
+  #setup{grid-template-columns:minmax(0,1fr);align-content:center;overflow:auto}
+  #player{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:clamp(14px,3vh,30px)}
+  #app[data-layout="classic"] .np{flex-direction:row;align-items:center;align-self:start;gap:16px}
+  #app[data-layout="classic"] .art{width:clamp(64px,18vw,150px)}
+  #app[data-layout="classic"] .halo{display:none}
+  #app[data-layout="classic"] .meta{flex:1}
+  #app.demo-on #player{padding-top:76px}
+}
+@media (max-width: 640px){
+  .hud{gap:0;padding:6px}
+  .hud button{width:50px;height:50px}
+  .hud .big{width:60px;height:60px}
+  .hud .offg,.hud .sep.s1{display:none}
+  .sheet{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:86vh;transform:translateY(110%)}
+  .badge{font-size:12px}
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-title,.hero-ly,.qr .scan::after{animation:none}
+}
+</style>
+</head>
+<body>
+<canvas id="aurora" aria-hidden="true"></canvas>
+<div class="veil" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="app" data-view="boot" data-layout="classic" data-size="m">
+
+  <!-- 車上首次設定 -->
+  <section class="view" id="setup">
+    <div class="hero">
+      <div class="brand"><span class="mark"></span>Lumen</div>
+      <h1 class="hero-title">流光歌詞</h1>
+      <p class="hero-ly">讓每一句歌詞，都被光填滿</p>
+      <p class="lede">即時同步你在 Spotify 播放的歌，逐字點亮、跟著專輯封面變色。專為特斯拉車機的大螢幕設計。</p>
+      <div class="hero-actions">
+        <button class="btn primary" id="btnDemo">先看看效果</button>
+        <button class="btn" id="btnDirect">在這台螢幕登入</button>
+        <button class="btn quiet" id="btnGuide">設定說明</button>
+      </div>
+    </div>
+    <div class="pair card" id="pairCard">
+      <div class="qr" id="qr"><div class="scan"></div></div>
+      <div>
+        <h2>用手機掃描來登入</h2>
+        <p>在手機上完成 Spotify 登入，<br>這個畫面會自動接上。</p>
+      </div>
+      <div class="status" id="pairStatus"><i></i><span>準備中…</span></div>
+    </div>
+  </section>
+
+  <!-- 手機配對 -->
+  <section class="view" id="phone"><div class="pcard card" id="pcard"></div></section>
+
+  <!-- 播放器 -->
+  <section class="view" id="player">
+    <aside class="np" id="np">
+      <div class="art"><div class="halo" id="halo"></div><img id="art" alt=""></div>
+      <div class="meta" id="meta">
+        <div class="np-title" id="npTitle"></div>
+        <div class="np-artist" id="npArtist"></div>
+        <div class="bar"><i id="bar"></i></div>
+        <div class="times"><span id="tCur">0:00</span><span class="paused-chip">已暫停</span><span id="tDur">0:00</span></div>
+        <div class="src"><span class="off">● 離線中</span><span id="srcLabel"></span></div>
+      </div>
+    </aside>
+    <section class="ly" id="ly">
+      <div class="ly-view" id="lyView"><div class="ly-track" id="lines"></div></div>
+      <div class="ly-state" id="lyState" hidden></div>
+    </section>
+    <div class="idle" id="idle">
+      <div class="clock" id="clock">--:--</div>
+      <div class="date" id="date"></div>
+      <div class="idle-note"><span class="eq"><i></i><i></i><i></i><i></i></span>在 Spotify 播放音樂，歌詞會出現在這裡</div>
+    </div>
+  </section>
+
+  <div class="hud card" id="hud">
+    <div class="offg">
+      <button data-act="off-" aria-label="歌詞延後 0.2 秒">−</button>
+      <output id="offOut">0.0s<small>歌詞時間</small></output>
+      <button data-act="off+" aria-label="歌詞提前 0.2 秒">+</button>
+    </div>
+    <span class="sep s1"></span>
+    <button data-act="prev" aria-label="上一首"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2.2v14H6zM19.5 5.6v12.8a.8.8 0 0 1-1.2.7L9 12.7a.8.8 0 0 1 0-1.4l9.3-6.4a.8.8 0 0 1 1.2.7z"/></svg></button>
+    <button data-act="toggle" class="big" aria-label="播放或暫停"><svg viewBox="0 0 24 24" fill="currentColor" id="icoPlay"><path d="M6 4.6h4.4v14.8H6zM13.6 4.6H18v14.8h-4.4z"/></svg></button>
+    <button data-act="next" aria-label="下一首"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.8 5H18v14h-2.2zM4.5 5.6v12.8a.8.8 0 0 0 1.2.7l9.3-6.4a.8.8 0 0 0 0-1.4L5.7 4.9a.8.8 0 0 0-1.2.7z"/></svg></button>
+    <span class="sep"></span>
+    <button data-act="layout" aria-label="切換版面"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9.5 4v16"/></svg></button>
+    <button data-act="settings" aria-label="設定"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/></svg></button>
+    <button data-act="fs" aria-label="全螢幕"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  </div>
+
+  <div class="badge card" id="badge" hidden><span>預覽模式 · 示範歌詞為原創</span><button id="badgeBtn">連接 Spotify</button></div>
+  <div class="toast card" id="toast" role="status" aria-live="polite"></div>
+  <div class="sheet-back" id="sheetBack"></div>
+  <aside class="sheet card" id="sheet" role="dialog" aria-modal="true"><button class="x" id="sheetX" aria-label="關閉">×</button><div id="sheetBody"></div></aside>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ════════════════ 設定 ════════════════ */
+// 可選：直接填入你的 Spotify Client ID，手機配對時就不用再貼一次。
+const DEFAULT_CLIENT_ID = '';
+const SCOPES = 'user-read-currently-playing user-read-playback-state user-modify-playback-state';
+const NTFY = 'https://ntfy.sh';
+const LRCLIB = 'https://lrclib.net/api';
+const QR_LIBS = ['https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.js', 'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js'];
+const OPENCC_LIBS = ['https://cdn.jsdelivr.net/npm/opencc-js@1.4.2/dist/umd/cn2t.js'];
+const REDIRECT_URI = location.origin + location.pathname.replace(/index\.html?$/i, '');
+const CLIENT_TAG = 'Lumen Lyrics/1.0 (' + location.host + ')';
+const FRAMED = (() => { try { return window.top !== window.self; } catch { return true; } })();
+const DEMO_ID = 'lumen-demo';
+
+/* ════════════════ 小工具 ════════════════ */
+const $ = (s, r = document) => r.querySelector(s);
+const root = document.documentElement, app = $('#app');
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const enc = new TextEncoder(), dec = new TextDecoder();
+const rand = n => crypto.getRandomValues(new Uint8Array(n));
+const b64u = {
+  enc(buf) { const b = new Uint8Array(buf); let s = ''; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); },
+  dec(str) { str = str.replace(/-/g, '+').replace(/_/g, '/'); while (str.length % 4) str += '='; const s = atob(str), b = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i); return b; },
+};
+const fmt = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('lumen.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('lumen.' + k, JSON.stringify(v)); } catch {} },
+  del(k) { try { localStorage.removeItem('lumen.' + k); } catch {} },
+};
+function loadScript(urls, ready) {
+  return new Promise((res, rej) => {
+    if (ready()) return res();
+    let i = 0;
+    const next = () => {
+      if (i >= urls.length) return rej(new Error('script load failed'));
+      const s = document.createElement('script'); s.src = urls[i++]; s.async = true;
+      s.onload = () => (ready() ? res() : next()); s.onerror = next;
+      document.head.append(s);
+    };
+    next();
+  });
+}
+let toastTimer = 0;
+function toast(msg, ms = 2800) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), ms); }
+function copyText(text) {
+  const done = () => toast('已複製');
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(done, () => fallback());
+  else fallback();
+  function fallback() { const ta = el('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;opacity:0'; document.body.append(ta); ta.select(); try { document.execCommand('copy'); done(); } catch { toast('請手動複製'); } ta.remove(); }
+}
+
+/* ════════════════ 偏好設定 ════════════════ */
+const PREF_DEFAULT = { layout: 'classic', size: 'm', zh: 'auto', quality: 'auto', theme: 'dark', offset: 0, trans: true };
+const prefs = Object.assign({}, PREF_DEFAULT, store.get('prefs', {}));
+let autoEco = false;
+const isLight = () => prefs.theme === 'light' || (prefs.theme === 'auto' && matchMedia('(prefers-color-scheme: light)').matches);
+function savePrefs() { store.set('prefs', prefs); applyPrefs(); }
+function applyPrefs() {
+  if (prefs.theme === 'auto') root.removeAttribute('data-theme'); else root.dataset.theme = prefs.theme;
+  app.dataset.layout = prefs.layout; app.dataset.size = prefs.size;
+  app.classList.toggle('no-trans', !prefs.trans);
+  updateQuality();
+  aurora.themeChanged();
+  updateOffsetLabel();
+  LV.relayout(true);
+}
+function updateQuality() {
+  const eco = prefs.quality === 'eco' || (prefs.quality === 'auto' && autoEco);
+  root.classList.toggle('eco', eco); root.classList.toggle('hq', !eco);
+  aurora.setEco(eco);
+}
+
+/* ════════════════ 極光背景（依專輯封面取色） ════════════════ */
+function rgb2hsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2;
+  if (mx === mn) return [0, 0, l];
+  const d = mx - mn, s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn);
+  let h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return [h / 6, s, l];
+}
+const hsla = (c, a = 1) => `hsla(${(c[0] * 360).toFixed(1)},${(c[1] * 100).toFixed(1)}%,${(c[2] * 100).toFixed(1)}%,${a})`;
+const hueDist = (a, b) => { const d = Math.abs(a - b); return Math.min(d, 1 - d); };
+
+const aurora = (() => {
+  const cv = $('#aurora'), ctx = cv.getContext('2d', { alpha: false });
+  const T0 = performance.now();
+  const BLOBS = [
+    { fx: .11, fy: .083, px: 0, py: 1.3, r: .6, a: .95 },
+    { fx: .077, fy: .13, px: 2.1, py: .4, r: .55, a: .9 },
+    { fx: .15, fy: .067, px: 4.2, py: 2.6, r: .48, a: .85 },
+    { fx: .053, fy: .107, px: 1.2, py: 4.1, r: .64, a: .8 },
+    { fx: .097, fy: .16, px: 3.3, py: 5.2, r: .42, a: .78 },
+  ];
+  const DEFAULT = [[.74, .62, .55], [.93, .72, .6], [.53, .7, .5], [.07, .82, .6], [.82, .5, .5]];
+  let W = 0, H = 0, eco = false, last = 0, pulse = 0;
+  let raw = DEFAULT, cur = null, from = null, to = null, mix = 1;
+
+  function resize() {
+    const h = eco ? 40 : 84, w = Math.max(16, Math.round(h * innerWidth / Math.max(1, innerHeight)));
+    if (w !== W || h !== H) { W = cv.width = w; H = cv.height = h; }
+    last = 0;
+  }
+  function themed(rawCols) {
+    const light = isLight();
+    const cols = rawCols.map(([h, s, l]) => {
+      const gray = s < .12;
+      return light
+        ? [h, gray ? s * .7 : clamp(s * .85, .28, .72), clamp(.8 + (l - .5) * .14, .72, .88)]
+        : [h, gray ? s * .8 : clamp(s * 1.12, .36, .9), clamp(.34 + (l - .5) * .26, .2, .5)];
+    });
+    const [h0, s0] = rawCols[0];
+    const base = light ? [h0, clamp(s0 * .35, .06, .3), .93] : [h0, clamp(s0 * .5, .08, .45), .07];
+    const vivid = rawCols.slice().sort((a, b) => b[1] - a[1])[0];
+    const accent = vivid[1] < .12 ? (light ? [0, 0, .3] : [0, 0, .85])
+      : light ? [vivid[0], clamp(vivid[1], .45, .8), .4] : [vivid[0], clamp(vivid[1], .5, .9), .76];
+    return { cols, base, accent };
+  }
+  function lerpC(a, b, t) {
+    let dh = b[0] - a[0]; if (dh > .5) dh -= 1; if (dh < -.5) dh += 1;
+    return [(a[0] + dh * t + 1) % 1, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  }
+  function lerpP(a, b, t) { return { cols: b.cols.map((c, i) => lerpC(a.cols[i % a.cols.length], c, t)), base: lerpC(a.base, b.base, t), accent: b.accent }; }
+  function setPalette(rawCols, instant) {
+    raw = rawCols;
+    const p = themed(rawCols);
+    root.style.setProperty('--accent', hsla(p.accent));
+    $('meta[name="theme-color"]').setAttribute('content', hsla(p.base));
+    if (!cur || instant) { cur = from = to = p; mix = 1; } else { from = cur; to = p; mix = 0; }
+  }
+  function extract(img) {
+    const S = 40, c = document.createElement('canvas'); c.width = c.height = S;
+    const x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(img, 0, 0, S, S);
+    const d = x.getImageData(0, 0, S, S).data, bins = new Map();
+    for (let i = 0; i < d.length; i += 4) {
+      const [h, s, l] = rgb2hsl(d[i], d[i + 1], d[i + 2]);
+      const k = (s < .12 ? 'g' : Math.round(h * 18) % 18) + ':' + (l < .2 ? 0 : l < .55 ? 1 : 2);
+      let b = bins.get(k); if (!b) bins.set(k, b = { n: 0, r: 0, g: 0, b: 0 });
+      b.n++; b.r += d[i]; b.g += d[i + 1]; b.b += d[i + 2];
+    }
+    const list = [...bins.values()].map(b => {
+      const hsl = rgb2hsl(b.r / b.n, b.g / b.n, b.b / b.n);
+      return { hsl, w: b.n * Math.pow(.25 + hsl[1], 1.6) * (hsl[2] < .08 || hsl[2] > .95 ? .15 : 1) };
+    }).sort((a, b) => b.w - a.w);
+    const out = [];
+    for (const c of list) {
+      if (out.length >= 5) break;
+      if (out.every(o => hueDist(o[0], c.hsl[0]) > .05 || Math.abs(o[2] - c.hsl[2]) > .25)) out.push(c.hsl);
+    }
+    if (!out.length) out.push([.7, .1, .4]);
+    for (let i = 0; out.length < 5; i++) { const [h, s, l] = out[i % out.length]; out.push([(h + .06 * (i + 1)) % 1, s, clamp(l + (i % 2 ? .1 : -.1), .1, .9)]); }
+    return out;
+  }
+  function seedPalette(seed) {
+    const h = (hashStr(String(seed || 'lumen')) % 1000) / 1000;
+    return [[h, .62, .5], [(h + .08) % 1, .7, .55], [(h + .5) % 1, .55, .45], [(h + .92) % 1, .7, .6], [(h + .2) % 1, .5, .5]];
+  }
+  function fromImage(url, seed) {
+    if (!url) return setPalette(seedPalette(seed));
+    const img = new Image(); img.crossOrigin = 'anonymous'; img.decoding = 'async';
+    img.onload = () => { try { setPalette(extract(img)); } catch { setPalette(seedPalette(seed)); } };
+    img.onerror = () => setPalette(seedPalette(seed));
+    img.src = url;
+  }
+  function draw(now) {
+    if (now - last < (eco ? 66 : 33)) return;
+    last = now;
+    if (!cur) setPalette(raw, true);
+    if (mix < 1) { mix = Math.min(1, mix + (eco ? .05 : .025)); const e = mix * mix * (3 - 2 * mix); cur = lerpP(from, to, e); }
+    const t = (now - T0) / 1000, m = Math.max(W, H);
+    ctx.fillStyle = hsla(cur.base); ctx.fillRect(0, 0, W, H);
+    pulse *= eco ? .86 : .93;
+    for (let i = 0; i < BLOBS.length; i++) {
+      const b = BLOBS[i], c = cur.cols[i % cur.cols.length];
+      const x = W * (.5 + .42 * Math.sin(t * b.fx + b.px)), y = H * (.5 + .38 * Math.cos(t * b.fy + b.py));
+      const r = m * (b.r + .05 * Math.sin(t * .37 + i) + pulse * .06);
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, hsla(c, b.a)); g.addColorStop(.55, hsla(c, b.a * .42)); g.addColorStop(1, hsla(c, 0));
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
+  }
+  addEventListener('resize', resize);
+  resize();
+  return {
+    draw, fromImage, setPalette,
+    pulse() { pulse = 1; },
+    setEco(v) { if (eco !== v) { eco = v; resize(); } },
+    themeChanged() { setPalette(raw, true); },
+  };
+})();
+
+/* ════════════════ 專輯封面（示範曲與無封面時使用的原創圖） ════════════════ */
+const artCache = new Map();
+function makeArt(seed) {
+  if (artCache.has(seed)) return artCache.get(seed);
+  const S = 600, c = document.createElement('canvas'); c.width = c.height = S;
+  const x = c.getContext('2d');
+  const h = seed === DEMO_ID ? 255 : hashStr(seed) % 360;
+  const sky = x.createLinearGradient(0, 0, 0, S);
+  sky.addColorStop(0, `hsl(${h},55%,10%)`); sky.addColorStop(.55, `hsl(${(h + 40) % 360},60%,22%)`); sky.addColorStop(1, `hsl(${(h + 70) % 360},70%,42%)`);
+  x.fillStyle = sky; x.fillRect(0, 0, S, S);
+  const sun = x.createRadialGradient(S * .62, S * .58, 0, S * .62, S * .58, S * .42);
+  sun.addColorStop(0, `hsla(${(h + 110) % 360},95%,72%,.95)`); sun.addColorStop(.35, `hsla(${(h + 90) % 360},90%,60%,.55)`); sun.addColorStop(1, 'hsla(0,0%,0%,0)');
+  x.fillStyle = sun; x.fillRect(0, 0, S, S);
+  for (let i = 0; i < 26; i++) {
+    const y = S * (.6 + Math.pow(i / 26, 1.6) * .38), len = S * (.25 + ((i * 37) % 60) / 100), x0 = ((i * 151) % 100) / 100 * S - len * .3;
+    const g = x.createLinearGradient(x0, 0, x0 + len, 0);
+    const hue = i % 3 === 0 ? (h + 120) % 360 : i % 3 === 1 ? (h + 180) % 360 : 30;
+    g.addColorStop(0, `hsla(${hue},90%,70%,0)`); g.addColorStop(.5, `hsla(${hue},95%,75%,${.35 + (i % 4) * .12})`); g.addColorStop(1, `hsla(${hue},90%,70%,0)`);
+    x.fillStyle = g; x.fillRect(x0, y, len, 1.5 + (i % 3) * 1.4);
+  }
+  x.globalAlpha = .9; x.fillStyle = 'rgba(255,255,255,.9)';
+  x.font = '800 44px "Plus Jakarta Sans", system-ui, sans-serif'; x.textBaseline = 'top';
+  if (seed === DEMO_ID) { x.fillText('LUMEN', 44, 46); x.globalAlpha = .6; x.font = '600 20px "Plus Jakarta Sans", system-ui, sans-serif'; x.fillText('NIGHT DRIVE', 47, 98); }
+  const url = c.toDataURL('image/jpeg', .9);
+  artCache.set(seed, url);
+  return url;
+}
+
+/* ════════════════ Spotify 授權（PKCE） ════════════════ */
+let auth = store.get('auth', null);
+const clientId = () => auth?.cid || store.get('cid', '') || DEFAULT_CLIENT_ID;
+async function pkce() {
+  const verifier = b64u.enc(rand(48));
+  const challenge = b64u.enc(await crypto.subtle.digest('SHA-256', enc.encode(verifier)));
+  return { verifier, challenge };
+}
+async function startLogin(mode, cid, pair) {
+  if (!crypto.subtle) { toast('需要 HTTPS 網址才能登入'); return; }
+  const { verifier, challenge } = await pkce();
+  const state = b64u.enc(rand(12));
+  store.set('pkce', { state, verifier, cid, mode, pair: pair || null, t: Date.now() });
+  const q = new URLSearchParams({ client_id: cid, response_type: 'code', redirect_uri: REDIRECT_URI, code_challenge_method: 'S256', code_challenge: challenge, scope: SCOPES, state });
+  location.assign('https://accounts.spotify.com/authorize?' + q);
+}
+async function tokenRequest(params) {
+  const res = await fetch('https://accounts.spotify.com/api/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(params) });
+  const j = await res.json().catch(() => ({}));
+  if (!res.ok) { const e = new Error(j.error_description || j.error || 'HTTP ' + res.status); e.code = j.error; e.status = res.status; throw e; }
+  return j;
+}
+async function handleCallback() {
+  const u = new URL(location.href);
+  const code = u.searchParams.get('code'), state = u.searchParams.get('state'), err = u.searchParams.get('error');
+  if (!code && !err) return null;
+  history.replaceState(null, '', REDIRECT_URI);
+  const p = store.get('pkce', null); store.del('pkce');
+  const base = { mode: p?.mode || 'car', pair: p?.pair || null, cid: p?.cid };
+  if (err) return { ...base, error: err === 'access_denied' ? '你取消了 Spotify 授權' : 'Spotify 回傳錯誤：' + err };
+  if (!p || p.state !== state) return { ...base, error: '登入流程已過期，請重新再試一次' };
+  try {
+    const tokens = await tokenRequest({ grant_type: 'authorization_code', code, redirect_uri: REDIRECT_URI, client_id: p.cid, code_verifier: p.verifier });
+    return { ...base, tokens };
+  } catch (e) { return { ...base, error: '取得授權失敗：' + e.message }; }
+}
+function saveTokens(cid, j) {
+  auth = { cid, rt: j.refresh_token || auth?.rt, at: j.access_token, exp: Date.now() + (j.expires_in || 3600) * 1000 };
+  store.set('auth', auth); store.set('cid', cid);
+}
+let refreshing = null;
+function refreshToken() {
+  if (refreshing) return refreshing;
+  refreshing = (async () => {
+    try {
+      const j = await tokenRequest({ grant_type: 'refresh_token', refresh_token: auth.rt, client_id: auth.cid });
+      saveTokens(auth.cid, j); return auth.at;
+    } catch (e) {
+      if (e.status === 400 || e.status === 401) logout('Spotify 登入已失效，請重新連接');
+      throw e;
+    } finally { refreshing = null; }
+  })();
+  return refreshing;
+}
+async function token() {
+  if (!auth) throw new Error('no-auth');
+  if (!auth.at || Date.now() > auth.exp - 60000) await refreshToken();
+  return auth.at;
+}
+function logout(msg) {
+  store.del('auth'); auth = null; clearTimeout(pollTimer);
+  pb.reset(); LV.state('idle');
+  if (msg) toast(msg, 4500);
+  showSetup();
+}
+
+/* ════════════════ Spotify Web API ════════════════ */
+let rateUntil = 0;
+async function sp(path, { method = 'GET', query, retry = true } = {}) {
+  if (Date.now() < rateUntil) { const e = new Error('rate'); e.rate = true; throw e; }
+  const t = await token();
+  const res = await fetch('https://api.spotify.com/v1' + path + (query ? '?' + new URLSearchParams(query) : ''), { method, headers: { Authorization: 'Bearer ' + t } });
+  if (res.status === 401 && retry) { auth.exp = 0; await refreshToken(); return sp(path, { method, query, retry: false }); }
+  if (res.status === 429) {
+    const ra = +res.headers.get('Retry-After') || 10;
+    rateUntil = Date.now() + ra * 1000;
+    let reason = ''; try { reason = (await res.json())?.error?.reason || ''; } catch {}
+    const e = new Error('rate'); e.rate = true; e.reason = reason; throw e;
+  }
+  if (res.status === 204 || res.status === 202) return null;
+  const txt = await res.text(); let j = null; try { j = txt ? JSON.parse(txt) : null; } catch {}
+  if (!res.ok) { const e = new Error(j?.error?.message || 'HTTP ' + res.status); e.status = res.status; e.reason = j?.error?.reason; throw e; }
+  return j;
+}
+
+/* ════════════════ 播放狀態 + 本地時鐘插值 ════════════════ */
+const pb = {
+  key: undefined, item: null, type: null, playing: false, progress: 0, at: 0, duration: 0,
+  reset() { this.key = undefined; this.item = null; this.type = null; this.playing = false; this.progress = 0; this.at = 0; this.duration = 0; },
+};
+function pos(now = performance.now()) {
+  const p = pb.playing ? pb.progress + (now - pb.at) : pb.progress;
+  return clamp(p, 0, pb.duration || Infinity);
+}
+function applyPlayback(j, half, now) {
+  const item = j?.item || null;
+  const type = j?.currently_playing_type || (item ? 'track' : null);
+  const key = item ? (item.id || item.uri || item.name) : (type === 'ad' ? 'ad' : null);
+  const playing = !!j?.is_playing;
+  const progress = (j?.progress_ms ?? 0) + (playing ? half : 0);
+  if (key !== pb.key) {
+    Object.assign(pb, { key, item, type, playing, progress, at: now, duration: item?.duration_ms || 0 });
+    onTrackChange(); onPlayState();
+    return;
+  }
+  const est = pos(now), diff = progress - est;
+  pb.progress = (playing && pb.playing && Math.abs(diff) < 400) ? est + diff * .4 : progress;
+  pb.at = now;
+  if (item?.duration_ms) pb.duration = item.duration_ms;
+  if (playing !== pb.playing) { pb.playing = playing; onPlayState(); }
+}
+
+let pollTimer = 0, pollBusy = false, failCount = 0;
+function schedulePoll(ms) { clearTimeout(pollTimer); pollTimer = setTimeout(poll, ms); }
+async function poll() {
+  if (demo.active || !auth || document.hidden || pollBusy) return;
+  pollBusy = true;
+  let next = 3000;
+  try {
+    const t0 = performance.now();
+    const j = await sp('/me/player/currently-playing', { query: { additional_types: 'episode' } });
+    const t1 = performance.now();
+    failCount = 0; setOnline(true);
+    applyPlayback(j, (t1 - t0) / 2, t1);
+    next = nextDelay();
+  } catch (e) {
+    if (e.message === 'no-auth' || !auth) { pollBusy = false; return; }
+    if (e.rate) { next = Math.max(rateUntil - Date.now(), 5000); if (e.reason === 'QUOTA_EXCEEDED') toast('Spotify API 額度暫時用完，稍後會自動恢復', 6000); }
+    else { failCount++; setOnline(false); next = Math.min(20000, 1500 * 2 ** Math.min(failCount, 4)); }
+  } finally { pollBusy = false; }
+  if (auth && !demo.active) schedulePoll(next);
+}
+function nextDelay() {
+  if (!pb.item) return 7000;
+  if (!pb.playing) return 4000;
+  const remain = pb.duration - pos();
+  return remain < 3500 ? clamp(remain + 350, 400, 3500) : 3000;
+}
+function setOnline(on) { app.classList.toggle('net-off', !on); }
+
+/* ════════════════ 歌詞取得（LRCLIB） ════════════════ */
+function trackSig(item) {
+  return { id: item.id || item.uri || item.name, name: item.name || '', artists: (item.artists || []).map(a => a.name), album: item.album?.name || '', dur: Math.round((item.duration_ms || 0) / 1000) };
+}
+function cleanTitle(s) {
+  const c = s
+    .replace(/\s*[-–—]\s*((\d{4}\s*)?(re-?master(ed)?|live|mono|stereo|single|radio edit|edit|version|mix|from\b|feat\.?|ft\.?|with\b|bonus|acoustic|demo)).*$/i, '')
+    .replace(/\s*[\(\[（【]\s*(feat\.?|ft\.?|with|from|re-?master|live|prod\.?|bonus|explicit|clean|deluxe|acoustic|demo|版|電影|电影|劇|剧)[^\)\]）】]*[\)\]）】]/ig, '')
+    .trim();
+  return c || s;
+}
+const norm = s => (s || '').toLowerCase().normalize('NFKC').replace(/[\s\p{P}\p{S}]+/gu, '');
+function scoreRec(rec, sig) {
+  if (!rec) return -1e9;
+  let sc;
+  if (rec.syncedLyrics) sc = 100; else if (rec.plainLyrics) sc = 30; else if (rec.instrumental) sc = 25; else return -1e9;
+  if (sig.dur && rec.duration) { const d = Math.abs(rec.duration - sig.dur); if (d > 6) return -1e9; sc -= d * 4; }
+  const tn = norm(cleanTitle(sig.name)), rn = norm(rec.trackName);
+  if (rn === tn || rn === norm(sig.name)) sc += 25; else if (rn && tn && (rn.includes(tn) || tn.includes(rn))) sc += 10; else sc -= 30;
+  const ra = norm(rec.artistName);
+  if (sig.artists.some(a => { const n = norm(a); return n && ra && (ra.includes(n) || n.includes(ra)); })) sc += 20; else sc -= 25;
+  return sc;
+}
+async function lrclib(path, params) {
+  const url = LRCLIB + path + '?' + new URLSearchParams(params);
+  const ctrl = new AbortController(), to = setTimeout(() => ctrl.abort(), 9000);
+  try {
+    let res;
+    try { res = await fetch(url, { headers: { 'Lrclib-Client': CLIENT_TAG }, signal: ctrl.signal }); }
+    catch (e) { if (ctrl.signal.aborted) throw e; res = await fetch(url, { signal: ctrl.signal }); }
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error('lrclib ' + res.status);
+    return await res.json();
+  } finally { clearTimeout(to); }
+}
+async function findLyrics(sig) {
+  let best = null, bestScore = -1e9, okCalls = 0;
+  const consider = rec => { const s = scoreRec(rec, sig); if (s > bestScore) { bestScore = s; best = rec; } };
+  const tryCall = async (path, params) => { try { const r = await lrclib(path, params); okCalls++; return r; } catch { return null; } };
+  const artist = sig.artists[0] || '', clean = cleanTitle(sig.name);
+  const base = { track_name: sig.name, artist_name: artist, album_name: sig.album, duration: sig.dur };
+  consider(await tryCall('/get', base));
+  if (!best?.syncedLyrics && clean !== sig.name) consider(await tryCall('/get', { ...base, track_name: clean }));
+  if (!best?.syncedLyrics || bestScore < 60) for (const r of (await tryCall('/search', { track_name: clean, artist_name: artist })) || []) consider(r);
+  if (!best?.syncedLyrics) for (const r of (await tryCall('/search', { q: clean + ' ' + artist })) || []) consider(r);
+  if (!okCalls) return { error: true };
+  if (bestScore < 40 || !best) return { none: true, at: Date.now() };
+  return { synced: best.syncedLyrics || null, plain: best.plainLyrics || null, instrumental: !best.syncedLyrics && !best.plainLyrics && !!best.instrumental, at: Date.now() };
+}
+const memCache = new Map();
+const lyStore = {
+  idx: store.get('lyidx', []),
+  get(id) { const r = store.get('ly.' + id, null); if (r?.none && Date.now() - (r.at || 0) > 3 * 864e5) return null; return r; },
+  put(id, r) {
+    store.set('ly.' + id, r);
+    this.idx = this.idx.filter(x => x !== id); this.idx.push(id);
+    while (this.idx.length > 60) store.del('ly.' + this.idx.shift());
+    store.set('lyidx', this.idx);
+  },
+};
+function getLyrics(sig) {
+  if (sig.id === DEMO_ID) return Promise.resolve({ synced: DEMO_LRC });
+  if (memCache.has(sig.id)) return memCache.get(sig.id);
+  const saved = lyStore.get(sig.id);
+  if (saved) { const p = Promise.resolve(saved); memCache.set(sig.id, p); return p; }
+  const p = findLyrics(sig).then(r => { if (r.error) memCache.delete(sig.id); else lyStore.put(sig.id, r); return r; });
+  memCache.set(sig.id, p);
+  return p;
+}
+
+/* 簡體偵測 + OpenCC 轉繁體（臺灣用字） */
+const SIMP = /[们这个来说时会对过还没问觉现发经让给爱难见门开关头飞东车长马鸟鱼风电话语书买卖认识谁听讲边远进运选间应该样梦泪恋忆实为么]/g;
+const TRAD = /[們這個來說時會對過還沒問覺現發經讓給愛難見門開關頭飛東車長馬鳥魚風電話語書買賣認識誰聽講邊遠進運選間應該樣夢淚戀憶實為麼]/g;
+const looksSimplified = t => { const s = (t.match(SIMP) || []).length, tr = (t.match(TRAD) || []).length; return s >= 2 && s > tr; };
+let opencc = null;
+async function toTrad(text) {
+  if (!opencc) { await loadScript(OPENCC_LIBS, () => window.OpenCC); opencc = window.OpenCC.Converter({ from: 'cn', to: 'tw' }); }
+  return opencc(text);
+}
+
+/* ════════════════ LRC 解析 → 時間軸模型 ════════════════ */
+const TAG_RE = /^\[(\d{1,3}):(\d{1,2})(?:[.:](\d{1,3}))?\]/;
+const CJK_RE = /[⺀-⿿぀-ヿ㄀-ㄯ㆐-ㇿ㐀-䶿一-鿿豈-﫿]/;
+const PUNCT_RE = /[\p{P}\p{S}]/u;
+const CREDIT_RE = /^(作词|作詞|作曲|编曲|編曲|制作人|製作人|监制|監製|词|詞|曲|演唱|原唱|混音|母带|母帶|和声|和聲|吉他|贝斯|貝斯|鼓|弦乐|弦樂|录音|錄音|出品|发行|發行|OP|SP|Lyrics?|Lyricist|Written by|Composer|Composed by|Producer|Produced by|Arranger|Arranged by)\s*[:：]/i;
+const msOf = (m, s, f) => { f = f || '0'; return (+m * 60 + +s) * 1000 + (f.length === 1 ? +f * 100 : f.length === 2 ? +f * 10 : +f.slice(0, 3)); };
+
+function parseLRC(src) {
+  let offset = 0; const out = [];
+  for (const raw of src.split(/\r?\n/)) {
+    let line = raw.trim(); if (!line) continue;
+    const off = line.match(/^\[offset:\s*([+-]?\d+)\s*\]$/i); if (off) { offset = +off[1]; continue; }
+    const stamps = []; let m;
+    while ((m = line.match(TAG_RE))) { stamps.push(msOf(m[1], m[2], m[3])); line = line.slice(m[0].length); }
+    if (!stamps.length) continue;
+    let text = line, words = null;
+    if (stamps.length === 1 && /<\d{1,3}:\d{1,2}(?:[.:]\d{1,3})?>/.test(text)) {
+      words = [];
+      const parts = text.split(/<(\d{1,3}:\d{1,2}(?:[.:]\d{1,3})?)>/);
+      if (parts[0]) words.push({ t: null, text: parts[0] });
+      for (let k = 1; k < parts.length; k += 2) { const mm = parts[k].match(/(\d+):(\d+)(?:[.:](\d+))?/); words.push({ t: Math.max(0, msOf(mm[1], mm[2], mm[3]) - offset), text: parts[k + 1] || '' }); }
+      text = words.map(w => w.text).join('');
+      if (!text.trim()) words = null;
+    }
+    for (const t of stamps) out.push({ t: Math.max(0, t - offset), text, words: stamps.length === 1 ? words : null });
+  }
+  out.sort((a, b) => a.t - b.t);
+  return out;
+}
+function tokenize(text) {
+  const out = [], ch = Array.from(text); let cur = '';
+  const flush = () => { if (cur) { out.push({ s: cur, sp: false }); cur = ''; } };
+  for (let i = 0; i < ch.length; i++) {
+    const c = ch[i];
+    if (/\s/.test(c)) { flush(); if (out.length) out[out.length - 1].sp = true; continue; }
+    if (CJK_RE.test(c)) {
+      flush(); let s = c;
+      while (i + 1 < ch.length && PUNCT_RE.test(ch[i + 1]) && !CJK_RE.test(ch[i + 1])) s += ch[++i];
+      out.push({ s, sp: false }); continue;
+    }
+    if (PUNCT_RE.test(c) && !cur && out.length && !out[out.length - 1].sp) { out[out.length - 1].s += c; continue; }
+    cur += c;
+  }
+  flush();
+  for (const u of out) {
+    const letters = u.s.replace(/[\p{P}\p{S}]/gu, '').length;
+    u.w = CJK_RE.test(u.s) ? 1 : letters ? clamp(letters / 3.5, .6, 2.6) : .25;
+  }
+  return out;
+}
+function timeUnits(units, t0, t1) {
+  const W = units.reduce((s, u) => s + u.w, 0) || 1; let acc = 0;
+  for (const u of units) { u.t0 = t0 + (t1 - t0) * acc / W; acc += u.w; u.t1 = t0 + (t1 - t0) * acc / W; }
+}
+function fillDuration(units, gap) {
+  const w = units.reduce((s, u) => s + u.w, 0);
+  return Math.max(320, Math.min(gap * .92, (290 * w + 380) * 1.2 + 250, 12000));
+}
+function wordUnits(line, words, nextT) {
+  const units = [];
+  for (let k = 0; k < words.length; k++) {
+    const w = words[k]; if (!w.text) continue;
+    const t = w.t ?? line.t;
+    let nt = null; for (let j = k + 1; j < words.length; j++) if (words[j].t != null) { nt = words[j].t; break; }
+    if (/^\s/.test(w.text) && units.length) units[units.length - 1].sp = true;
+    const us = tokenize(w.text); if (!us.length) continue;
+    const wsum = us.reduce((s, u) => s + u.w, 0);
+    const end = nt ?? Math.min(nextT, t + 300 * wsum + 300);
+    timeUnits(us, t, Math.max(t + 80, end));
+    units.push(...us);
+  }
+  line.units = units;
+  line.end = units.length ? units[units.length - 1].t1 : line.t + 1000;
+}
+function buildModel(entries, durMs) {
+  const rows = [];
+  for (const e of entries) {
+    const text = e.text.replace(/\s+/g, ' ').trim(), prev = rows[rows.length - 1];
+    if (prev && text && prev.text && !prev.sub && !e.words && Math.abs(prev.t - e.t) <= 80) { prev.sub = text; continue; }
+    rows.push({ t: e.t, text, words: e.words });
+  }
+  const items = []; let prevEnd = 0, seenLyric = false;
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i]; if (!r.text) continue;
+    let nextT = durMs || r.t + 8000;
+    for (let j = i + 1; j < rows.length; j++) if (rows[j].t > r.t + 50) { nextT = rows[j].t; break; }
+    const credit = !seenLyric && CREDIT_RE.test(r.text);
+    const line = { kind: 'line', t: r.t, text: r.text, sub: r.sub || null, credit };
+    if (credit) { line.units = tokenize(r.text); line.end = Math.min(nextT, r.t + 1800); timeUnits(line.units, r.t, line.end); }
+    else if (r.words) wordUnits(line, r.words, nextT);
+    else { line.units = tokenize(r.text); line.end = r.t + fillDuration(line.units, nextT - r.t); timeUnits(line.units, r.t, line.end); }
+    if (!credit) {
+      const lead = seenLyric ? 4200 : 3600;
+      if (line.t - prevEnd >= lead) {
+        const gs = seenLyric ? prevEnd + 350 : Math.max(200, prevEnd + 350), ge = line.t - 250;
+        if (ge - gs >= 2600) items.push({ kind: 'gap', t: gs, end: ge });
+      }
+      seenLyric = true;
+    }
+    items.push(line); prevEnd = Math.max(prevEnd, line.end);
+  }
+  return { items };
+}
+
+/* ════════════════ 歌詞畫面 ════════════════ */
+const LV = {
+  view: $('#lyView'), track: $('#lines'), stateBox: $('#lyState'),
+  items: [], active: -1, tops: [], heights: [], anchor: 0, mode: 'idle', plainY: null,
+
+  enter() { const ly = $('#ly'); ly.classList.remove('enter'); void ly.offsetWidth; ly.classList.add('enter'); },
+  clear() { this.items = []; this.active = -1; this.track.replaceChildren(); this.track.style.transform = ''; this.plainY = null; },
+
+  set(model) {
+    this.clear(); this.mode = 'synced';
+    const frag = document.createDocumentFragment();
+    model.items.forEach((it, idx) => {
+      let node;
+      if (it.kind === 'gap') { node = el('div', 'item gap'); const d = el('span', 'dots'); d.append(el('i'), el('i'), el('i')); node.append(d); it.dots = [...d.children]; }
+      else {
+        node = el('div', 'item line' + (it.credit ? ' credit' : ''));
+        const main = el('span', 'main'); it.unitEls = [];
+        for (const u of it.units) { const s = el('span', 'u', u.s); main.append(s); it.unitEls.push(s); if (u.sp) main.append(document.createTextNode(' ')); }
+        node.append(main);
+        if (it.sub) node.append(el('span', 'sub', it.sub));
+      }
+      node.dataset.i = idx; it.el = node; frag.append(node);
+    });
+    this.items = model.items;
+    this.track.append(frag);
+    this.show('synced'); this.relayout(true); this.enter();
+  },
+
+  setPlain(text) {
+    this.clear(); this.mode = 'plain';
+    const frag = document.createDocumentFragment();
+    for (const s of text.split(/\r?\n/).map(x => x.trim())) frag.append(s ? el('div', 'item line plain', s) : el('div', 'item line blank'));
+    this.track.append(frag);
+    for (const n of this.track.children) n.dataset.d = '1';
+    this.show('plain'); this.relayout(true); this.enter();
+  },
+
+  state(kind, sig) {
+    this.clear(); this.mode = kind; this.show(kind);
+    if (kind === 'idle') return;
+    const box = this.stateBox; box.replaceChildren(); box.onclick = null; box.classList.remove('tappable');
+    const title = el('div', 'st-title', sig?.name || ''), artist = el('div', 'st-artist', (sig?.artists || []).join(', ')), note = el('div', 'st-note');
+    const eq = () => { const e = el('span', 'eq'); for (let i = 0; i < 4; i++) e.append(el('i')); return e; };
+    if (kind === 'loading') note.append(eq(), el('span', 'shimmer', '正在尋找歌詞'));
+    else if (kind === 'none') note.textContent = '這首歌目前沒有可用的歌詞';
+    else if (kind === 'instrumental') note.append(eq(), el('span', null, '純音樂 · 享受旋律'));
+    else if (kind === 'episode') note.textContent = 'Podcast 節目沒有歌詞';
+    else if (kind === 'ad') { title.textContent = '廣告時間'; note.textContent = '廣告結束後，歌詞會回來'; }
+    else if (kind === 'connecting') { title.textContent = '正在連接 Spotify'; note.append(eq(), el('span', 'shimmer', '讀取播放狀態')); }
+    else if (kind === 'error') {
+      note.textContent = '歌詞服務暫時連不上 · 點一下重試';
+      box.classList.add('tappable');
+      box.onclick = e => { e.stopPropagation(); if (pb.item) loadLyricsFor(pb.item); };
+    }
+    box.append(title, artist, note);
+    this.enter();
+  },
+
+  show(kind) {
+    app.dataset.ly = kind;
+    const lyr = kind === 'synced' || kind === 'plain';
+    this.view.hidden = !lyr; this.stateBox.hidden = lyr || kind === 'idle';
+    $('#srcLabel').textContent = kind === 'synced' ? 'LRCLIB · 同步歌詞' : kind === 'plain' ? 'LRCLIB · 未同步歌詞' : '';
+  },
+
+  relayout(instant) {
+    if (this.mode !== 'synced' && this.mode !== 'plain') return;
+    const vh = this.view.clientHeight; if (!vh) return;
+    this.anchor = vh * (prefs.layout === 'immersive' ? .4 : .36);
+    if (this.mode === 'plain') { this.plainY = null; return; }
+    this.tops = this.items.map(it => it.el.offsetTop);
+    this.heights = this.items.map(it => it.el.offsetHeight);
+    this.place(instant ? 'instant' : 'none');
+  },
+
+  place(kind) {
+    const n = this.items.length; if (!n) return;
+    const a = Math.max(this.active, 0);
+    const y = this.anchor - (this.tops[a] + this.heights[a] / 2);
+    for (let i = 0; i < n; i++) {
+      const it = this.items[i], st = it.el.style;
+      const d = this.active < 0 ? i + 1 : i - this.active;
+      it.el.dataset.d = String(clamp(d, -5, 5));
+      const k = i - a + 2;
+      st.transitionDelay = kind === 'stagger' && k > 0 ? Math.min(k, 9) * 42 + 'ms' : '0ms';
+      st.setProperty('--y', y.toFixed(1) + 'px');
+    }
+    if (kind === 'instant') { this.track.classList.add('instant'); void this.track.offsetHeight; requestAnimationFrame(() => this.track.classList.remove('instant')); }
+  },
+
+  findIndex(t) {
+    const a = this.items; let lo = 0, hi = a.length - 1, ans = -1;
+    while (lo <= hi) { const mid = (lo + hi) >> 1; if (a[mid].t <= t) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+    return ans;
+  },
+
+  setActive(i) {
+    const prev = this.active;
+    if (prev >= 0) {
+      const p = this.items[prev]; p.el.classList.remove('active', 'ending');
+      if (p.unitEls) p.units.forEach((u, k) => { u._p = u._g = undefined; const s = p.unitEls[k]; s.style.removeProperty('--p'); s.style.removeProperty('--g'); s.classList.remove('glow'); });
+      if (p.dots) p.dots.forEach(d => d.style.removeProperty('--p'));
+    }
+    this.active = i;
+    if (i >= 0) this.items[i].el.classList.add('active');
+    this.place(Math.abs(i - prev) > 2 ? 'none' : 'stagger');
+    if (i >= 0 && this.items[i].kind === 'line' && !this.items[i].credit) aurora.pulse();
+  },
+
+  update(t) {
+    if (this.mode === 'plain') return this.updatePlain(t);
+    if (this.mode !== 'synced') return;
+    const i = this.findIndex(t);
+    if (i !== this.active) this.setActive(i);
+    if (i < 0) return;
+    const it = this.items[i];
+    if (it.kind === 'gap') {
+      const p = clamp((t - it.t) / (it.end - it.t), 0, 1);
+      it.dots.forEach((d, k) => d.style.setProperty('--p', clamp(p * 3 - k, 0, 1).toFixed(3)));
+      it.el.classList.toggle('ending', it.end - t < 420);
+      return;
+    }
+    if (it.credit) return;
+    const us = it.units, els = it.unitEls;
+    for (let k = 0; k < us.length; k++) {
+      const u = us[k];
+      const p = t <= u.t0 ? 0 : t >= u.t1 ? 1 : (t - u.t0) / (u.t1 - u.t0);
+      const g = p > 0 && p < 1 ? 1 : p === 1 ? Math.max(0, 1 - (t - u.t1) / 600) : 0;
+      if (u._p === undefined || Math.abs(p - u._p) > .004 || (p !== u._p && (p === 0 || p === 1))) { els[k].style.setProperty('--p', p.toFixed(3)); u._p = p; }
+      if (u._g !== g && (u._g === undefined || Math.abs(g - u._g) > .02 || g === 0)) {
+        els[k].style.setProperty('--g', g.toFixed(2)); els[k].classList.toggle('glow', g > 0); u._g = g;
+      }
+    }
+  },
+
+  updatePlain(t) {
+    const dur = pb.duration || 1, frac = clamp((t - 6000) / Math.max(1, dur - 16000), 0, 1);
+    const total = this.track.scrollHeight, vh = this.view.clientHeight;
+    const target = this.anchor * .5 - frac * Math.max(0, total - vh * .55);
+    this.plainY = this.plainY == null ? target : this.plainY + (target - this.plainY) * .06;
+    this.track.style.transform = `translate3d(0,${this.plainY.toFixed(1)}px,0)`;
+  },
+};
+
+/* ════════════════ 歌曲切換 ════════════════ */
+let lyToken = 0, lastResult = null, lastSig = null;
+function onTrackChange() {
+  updateNowPlaying();
+  lyToken++;
+  if (!pb.item) { if (pb.type === 'ad') { app.dataset.ly = 'ad'; LV.state('ad'); } else LV.state('idle'); tickClock(); return; }
+  if (pb.type === 'episode') { LV.state('episode', { name: pb.item.name, artists: [pb.item.show?.name || ''] }); return; }
+  loadLyricsFor(pb.item);
+}
+async function loadLyricsFor(item) {
+  const my = ++lyToken, sig = trackSig(item);
+  LV.state('loading', sig);
+  const r = await getLyrics(sig).catch(() => ({ error: true }));
+  if (my !== lyToken) return;
+  if (r.error) { LV.state('error', sig); return; }
+  lastResult = r; lastSig = sig;
+  await present(r, sig, my);
+  if (sig.id !== DEMO_ID) setTimeout(() => { if (my === lyToken && auth && !demo.active) prefetchNext(); }, 2500);
+}
+async function present(r, sig, my) {
+  const conv = async txt => { if (prefs.zh === 'auto' && looksSimplified(txt)) { try { return await toTrad(txt); } catch {} } return txt; };
+  if (r.synced) {
+    const txt = await conv(r.synced); if (my !== lyToken) return;
+    const model = buildModel(parseLRC(txt), pb.duration);
+    if (model.items.length) { LV.set(model); return; }
+  }
+  if (r.plain) { const txt = await conv(r.plain); if (my !== lyToken) return; LV.setPlain(txt); return; }
+  LV.state(r.instrumental ? 'instrumental' : 'none', sig);
+}
+function represent() { if (lastResult && lastSig && pb.item && trackSig(pb.item).id === lastSig.id) present(lastResult, lastSig, lyToken); }
+async function prefetchNext() {
+  try { const q = await sp('/me/player/queue'); const nx = q?.queue?.[0]; if (nx?.type === 'track' && nx.id) getLyrics(trackSig(nx)); } catch {}
+}
+
+let artCur = null;
+function updateNowPlaying() {
+  const it = pb.item;
+  if (!it) { document.title = 'Lumen 流光歌詞'; return; }
+  const ep = pb.type === 'episode';
+  const name = it.name || '', artists = ep ? (it.show?.name || '') : (it.artists || []).map(a => a.name).join(', ');
+  $('#npTitle').textContent = name; $('#npArtist').textContent = artists;
+  const meta = $('#meta'); meta.classList.remove('swap'); void meta.offsetWidth; meta.classList.add('swap');
+  const imgs = (ep ? it.images : it.album?.images) || [];
+  const big = imgs[0]?.url || makeArt(it.id === DEMO_ID ? DEMO_ID : name);
+  const mid = (imgs[1] || imgs[0])?.url || big;
+  swapArt(big);
+  aurora.fromImage(mid, name);
+  $('#tDur').textContent = fmt(pb.duration);
+  document.title = name + ' · Lumen';
+}
+function swapArt(url) {
+  if (url === artCur) return; artCur = url;
+  const img = $('#art'), pre = new Image();
+  pre.onload = pre.onerror = () => {
+    img.classList.add('out');
+    setTimeout(() => { if (artCur !== url) return; img.src = url; $('#halo').style.backgroundImage = `url("${url}")`; requestAnimationFrame(() => img.classList.remove('out')); }, 280);
+  };
+  pre.src = url;
+}
+function onPlayState() {
+  app.classList.toggle('paused', !pb.playing && !!pb.item);
+  $('#icoPlay').innerHTML = pb.playing ? '<path d="M6 4.6h4.4v14.8H6zM13.6 4.6H18v14.8h-4.4z"/>' : '<path d="M7.5 4.8v14.4a.9.9 0 0 0 1.4.8l11.2-7.2a.9.9 0 0 0 0-1.6L8.9 4a.9.9 0 0 0-1.4.8z"/>';
+}
+
+/* ════════════════ 播放控制 ════════════════ */
+function ctrlErr(e) {
+  if (e.status === 403) return '無法遠端控制（需要 Premium，或此裝置不支援）';
+  if (e.status === 404) return '找不到正在播放的裝置';
+  if (e.rate) return '請求太頻繁，稍等一下';
+  return '控制失敗：' + e.message;
+}
+async function act(a) {
+  if (a === 'off-' || a === 'off+') { prefs.offset = clamp(prefs.offset + (a === 'off+' ? 200 : -200), -5000, 5000); store.set('prefs', prefs); updateOffsetLabel(); return; }
+  if (a === 'layout') { prefs.layout = prefs.layout === 'classic' ? 'immersive' : 'classic'; savePrefs(); return; }
+  if (a === 'settings') { openSettings(); return; }
+  if (a === 'fs') { toggleFS(); return; }
+  if (demo.active) { demo.ctrl(a); return; }
+  try {
+    if (a === 'toggle') {
+      const was = pb.playing; pb.progress = pos(); pb.at = performance.now(); pb.playing = !was; onPlayState();
+      await sp(was ? '/me/player/pause' : '/me/player/play', { method: 'PUT' });
+    } else if (a === 'next') await sp('/me/player/next', { method: 'POST' });
+    else if (a === 'prev') await sp('/me/player/previous', { method: 'POST' });
+    schedulePoll(a === 'toggle' ? 1200 : 600);
+  } catch (e) { toast(ctrlErr(e)); schedulePoll(0); }
+}
+async function seekTo(ms) {
+  ms = Math.max(0, Math.round(ms));
+  pb.progress = ms; pb.at = performance.now();
+  if (demo.active) return;
+  try { await sp('/me/player/seek', { method: 'PUT', query: { position_ms: ms } }); schedulePoll(900); }
+  catch (e) { toast(ctrlErr(e)); schedulePoll(0); }
+}
+function updateOffsetLabel() {
+  const o = prefs.offset / 1000;
+  $('#offOut').innerHTML = '';
+  $('#offOut').append((o > 0 ? '+' : o < 0 ? '−' : '') + Math.abs(o).toFixed(1) + 's', el('small', null, o > 0 ? '歌詞提前' : o < 0 ? '歌詞延後' : '歌詞時間'));
+}
+function toggleFS() {
+  const d = document;
+  if (!d.fullscreenElement) { const p = root.requestFullscreen?.(); if (p) p.catch(() => toast('這個瀏覽器不支援全螢幕')); else toast('這個瀏覽器不支援全螢幕'); }
+  else d.exitFullscreen?.();
+}
+let hudTimer = 0;
+function showHud(on = true) {
+  const h = $('#hud'); clearTimeout(hudTimer);
+  h.classList.toggle('show', on); app.classList.toggle('hud-on', on);
+  if (on) hudTimer = setTimeout(() => { h.classList.remove('show'); app.classList.remove('hud-on'); }, 4500);
+}
+
+/* ════════════════ 手機 QR 配對（ntfy 中繼 + AES-GCM 端對端加密） ════════════════ */
+const pairing = {
+  es: null, keyRaw: null, url: '', busy: false,
+  async start() {
+    this.stop();
+    const status = (txt, cls) => { const s = $('#pairStatus'); s.className = 'status' + (cls ? ' ' + cls : ''); s.lastElementChild.textContent = txt; };
+    this.status = status;
+    $('#pairCard').classList.remove('linked'); $('.linked-badge')?.remove();
+    if (!crypto.subtle) { status('需要 HTTPS 網址才能配對', 'err'); renderQR(null); return; }
+    const id = b64u.enc(rand(12)); this.keyRaw = rand(32);
+    this.url = REDIRECT_URI + '#p=' + id + '.' + b64u.enc(this.keyRaw);
+    renderQR(this.url).then(() => { if (this.es && this.es.readyState !== 2) status('等待手機掃描…'); });
+    const since = Math.floor(Date.now() / 1000) - 5;
+    try {
+      const es = new EventSource(`${NTFY}/lumen-${id}/sse?since=${since}`);
+      this.es = es;
+      es.onopen = () => status('等待手機掃描…');
+      es.onerror = () => status('連線中…');
+      es.onmessage = ev => this.onMsg(ev.data);
+    } catch { status('無法建立配對連線', 'err'); }
+  },
+  async onMsg(data) {
+    if (this.busy) return;
+    let m, payload; try { m = JSON.parse(data); payload = JSON.parse(m.message || ''); } catch { return; }
+    if (m.event && m.event !== 'message') return;
+    if (payload?.v !== 1) return;
+    this.busy = true;
+    try {
+      const key = await crypto.subtle.importKey('raw', this.keyRaw, 'AES-GCM', false, ['decrypt']);
+      const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64u.dec(payload.iv) }, key, b64u.dec(payload.ct));
+      const obj = JSON.parse(dec.decode(pt));
+      this.stop();
+      this.status('已收到，連接 Spotify…', 'ok');
+      auth = { cid: obj.cid, rt: obj.rt, at: null, exp: 0 };
+      await refreshToken();
+      const card = $('#pairCard'); card.classList.add('linked');
+      const b = el('div', 'linked-badge'); b.innerHTML = '<svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="25"/><path d="M15 27l7 7 15-16"/></svg>'; card.append(b);
+      this.status('連接成功', 'ok');
+      setTimeout(enterPlayer, 1300);
+    } catch (e) {
+      this.busy = false;
+      if (!auth) this.status('配對失敗，請重新掃描', 'err');
+      else { auth = null; this.status('登入失敗：' + e.message, 'err'); }
+      setTimeout(() => app.dataset.view === 'setup' && this.start(), 2500);
+    }
+    this.busy = false;
+  },
+  stop() { this.es?.close(); this.es = null; },
+};
+async function renderQR(text) {
+  const box = $('#qr');
+  box.querySelector('svg, .qr-fallback')?.remove();
+  if (!text) { const f = el('div', 'qr-fallback', '請用 HTTPS 網址開啟'); box.prepend(f); return; }
+  try {
+    await loadScript(QR_LIBS, () => typeof window.qrcode === 'function');
+    const qr = window.qrcode(0, 'M'); qr.addData(text); qr.make();
+    const n = qr.getModuleCount();
+    const inFinder = (r, c) => (r < 7 && c < 7) || (r < 7 && c >= n - 7) || (r >= n - 7 && c < 7);
+    let d = '';
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c) && !inFinder(r, c)) d += `M${c + .1} ${r + .1}h.8v.8h-.8z`;
+    const finder = (x, y) => `<rect x="${x + .5}" y="${y + .5}" width="6" height="6" rx="1.8" fill="none" stroke="#120f1a" stroke-width="1"/><rect x="${x + 2}" y="${y + 2}" width="3" height="3" rx=".9" fill="#120f1a"/>`;
+    const svg = `<svg viewBox="-.5 -.5 ${n + 1} ${n + 1}" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision"><path d="${d}" fill="#120f1a"/>${finder(0, 0)}${finder(n - 7, 0)}${finder(0, n - 7)}</svg>`;
+    box.insertAdjacentHTML('afterbegin', svg);
+  } catch {
+    const f = el('div', 'qr-fallback'); f.append('無法產生 QR Code', el('br'), el('small', null, text)); box.prepend(f);
+  }
+}
+async function sendToCar(pair, cid, tokens) {
+  phoneView('sending');
+  const key = await crypto.subtle.importKey('raw', b64u.dec(pair.key), 'AES-GCM', false, ['encrypt']);
+  const iv = rand(12);
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(JSON.stringify({ cid, rt: tokens.refresh_token })));
+  const body = JSON.stringify({ v: 1, iv: b64u.enc(iv), ct: b64u.enc(ct) });
+  const url = `${NTFY}/lumen-${pair.id}`;
+  try { const r = await fetch(url, { method: 'POST', body }); if (!r.ok) throw new Error('ntfy ' + r.status); }
+  catch (e) { if (e instanceof TypeError) await fetch(url, { method: 'POST', body, mode: 'no-cors' }); else throw e; }
+  phoneView('done');
+}
+
+/* ════════════════ 畫面：設定說明 / 手機頁 / 設定面板 ════════════════ */
+function guideSteps() {
+  const ol = el('ol', 'steps');
+  const li = (title, ...nodes) => { const l = el('li'); l.append(el('b', null, title), ...nodes); ol.append(l); return l; };
+  li('建立 Spotify App', '到 ', el('code', null, 'developer.spotify.com/dashboard'), ' 按 Create app。App 擁有者需要 Spotify Premium。');
+  const row = el('div', 'copyrow'), code = el('code', null, FRAMED ? 'https://你的帳號.github.io/lumen/' : REDIRECT_URI), btn = el('button', null, '複製');
+  btn.onclick = () => copyText(code.textContent); row.append(code, btn);
+  li('填入 Redirect URI', '必須一字不差（包含結尾斜線）：', row);
+  li('勾選 Web API，然後儲存');
+  li('複製 Client ID', '在 App 的 Settings 頁面。掃描車上的 QR Code 後，貼到手機上。');
+  li('用其他帳號登入？', '到 App 的 User Management 加入該 Spotify 帳號的 Email（開發模式最多 5 人）。');
+  return ol;
+}
+function openGuide(withLogin) {
+  const b = el('div');
+  b.append(el('h2', null, '第一次設定'), el('p', 'muted', '大約 3 分鐘，只需要做一次。'));
+  if (FRAMED) b.append(el('p', 'note', '這是預覽頁。要在車上使用，請把 index.html 放到 GitHub Pages 這類 HTTPS 網址，再用那個網址完成下面的設定。'));
+  b.append(guideSteps());
+  if (withLogin && !FRAMED) {
+    const f = el('label', 'field'), inp = el('input');
+    f.append(el('span', null, 'Spotify Client ID'), inp);
+    inp.value = clientId(); inp.placeholder = '32 碼英數字'; inp.autocomplete = 'off'; inp.spellcheck = false;
+    const go = el('button', 'btn spotify wide', '在這台螢幕登入 Spotify'); go.style.marginTop = '16px';
+    go.onclick = () => { const v = inp.value.trim(); if (!/^[0-9a-f]{32}$/i.test(v)) { f.classList.add('bad'); toast('Client ID 應該是 32 碼英數字'); return; } store.set('cid', v); startLogin('car', v); };
+    b.append(f, go);
+  }
+  openSheet(b);
+}
+function linkArt() {
+  const s = '<svg class="link-art" viewBox="0 0 180 72"><rect x="8" y="10" width="30" height="52" rx="7"/><rect x="104" y="14" width="68" height="44" rx="8"/><circle class="d" cx="56" cy="36" r="4"/><circle class="d" cx="71" cy="36" r="4"/><circle class="d" cx="86" cy="36" r="4"/></svg>';
+  const w = el('div'); w.innerHTML = s; return w.firstChild;
+}
+function phoneView(kind, opt = {}) {
+  app.dataset.view = 'phone';
+  const card = $('#pcard'); card.replaceChildren();
+  if (kind === 'form') {
+    card.append(linkArt(), el('h2', null, '連接車上的 Lumen'), el('p', 'pc-sub', '用你的 Spotify 帳號登入。完成後，車上的螢幕會自動顯示歌詞。'));
+    const f = el('label', 'field'), inp = el('input');
+    f.append(el('span', null, 'Spotify Client ID'), inp);
+    inp.value = clientId(); inp.placeholder = '貼上 32 碼 Client ID'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.setAttribute('autocapitalize', 'off');
+    if (DEFAULT_CLIENT_ID) f.hidden = true;
+    const btn = el('button', 'btn spotify wide', '使用 Spotify 登入');
+    btn.onclick = () => {
+      const v = inp.value.trim();
+      if (!/^[0-9a-f]{32}$/i.test(v)) { f.classList.add('bad'); inp.focus(); toast('Client ID 應該是 32 碼英數字'); return; }
+      store.set('cid', v); btn.disabled = true; btn.textContent = '前往 Spotify…';
+      startLogin('pair', v, opt.pair);
+    };
+    const help = el('details', 'help'); help.append(el('summary', null, '還沒有 Client ID？看設定步驟'), guideSteps());
+    card.append(f, btn, help, el('p', 'fine', '配對金鑰只存在 QR Code 裡；傳到車上的資料全程加密，中繼伺服器看不到內容。'));
+  } else if (kind === 'sending') {
+    card.append(el('div', 'spin'), el('h2', null, '正在傳送到車上…'), el('p', 'pc-sub', '請稍候幾秒鐘'));
+  } else if (kind === 'done') {
+    const w = el('div'); w.innerHTML = '<svg class="done-art" viewBox="0 0 52 52"><circle cx="26" cy="26" r="25"/><path d="M15 27l7 7 15-16"/></svg>';
+    card.append(w.firstChild, el('h2', null, '完成！'), el('p', 'pc-sub', '看看車上的螢幕，歌詞已經準備好了。這個頁面可以關閉。'));
+  } else if (kind === 'error') {
+    card.append(linkArt(), el('h2', null, '出了點問題'), el('p', 'pc-sub', opt.msg || '請再試一次'));
+    if (opt.pair) { const b = el('button', 'btn primary wide', '重新登入'); b.onclick = () => phoneView('form', { pair: opt.pair }); card.append(b); }
+    else card.append(el('p', 'fine', '請回到車上重新掃描 QR Code。'));
+  }
+}
+const SETTINGS = [
+  { k: 'layout', label: '版面', opts: [['classic', '經典'], ['immersive', '沉浸']] },
+  { k: 'size', label: '歌詞大小', opts: [['s', '小'], ['m', '中'], ['l', '大'], ['xl', '特大']] },
+  { k: 'theme', label: '主題', opts: [['dark', '深色'], ['light', '淺色'], ['auto', '跟隨系統']] },
+  { k: 'zh', label: '簡體歌詞轉繁體', opts: [['auto', '自動轉換'], ['off', '保持原文']] },
+  { k: 'trans', label: '翻譯行', opts: [[true, '顯示'], [false, '隱藏']] },
+  { k: 'quality', label: '畫面效果', opts: [['auto', '自動'], ['high', '華麗'], ['eco', '流暢']] },
+];
+function openSettings() {
+  const b = el('div'); b.append(el('h2', null, '設定'));
+  for (const s of SETTINGS) {
+    const row = el('div', 'opt'), seg = el('div', 'seg');
+    row.append(el('label', null, s.label));
+    for (const [v, txt] of s.opts) {
+      const btn = el('button', null, txt); btn.setAttribute('aria-pressed', String(prefs[s.k] === v));
+      btn.onclick = () => {
+        prefs[s.k] = v; if (s.k === 'quality') autoEco = false;
+        savePrefs(); [...seg.children].forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
+        if (s.k === 'zh') represent();
+      };
+      seg.append(btn);
+    }
+    row.append(seg); b.append(row);
+  }
+  const off = el('div', 'opt'), offRow = el('div', 'row'), out = el('span', 'btn quiet');
+  const upd = () => { out.textContent = (prefs.offset >= 0 ? '+' : '−') + Math.abs(prefs.offset / 1000).toFixed(1) + ' 秒'; };
+  const mk = (txt, dv) => { const x = el('button', 'btn', txt); x.onclick = () => { prefs.offset = dv === 0 ? 0 : clamp(prefs.offset + dv, -5000, 5000); store.set('prefs', prefs); upd(); updateOffsetLabel(); }; return x; };
+  upd(); offRow.append(mk('延後', -200), out, mk('提前', 200), mk('歸零', 0));
+  off.append(el('label', null, '歌詞時間微調'), offRow); b.append(off);
+  const acc = el('div', 'opt'), accRow = el('div', 'row');
+  acc.append(el('label', null, 'Spotify'));
+  if (auth && !demo.active) { const x = el('button', 'btn', '登出'); x.onclick = () => { closeSheet(); logout('已登出'); }; accRow.append(x); }
+  else { const x = el('button', 'btn spotify', '連接 Spotify'); x.onclick = () => { closeSheet(); if (FRAMED) openGuide(false); else { demo.stop(); showSetup(); } }; accRow.append(x); }
+  const g = el('button', 'btn', '設定說明'); g.onclick = () => openGuide(false); accRow.append(g);
+  acc.append(accRow); b.append(acc);
+  b.append(el('p', 'about', '歌詞來自 LRCLIB 社群資料庫；同步時間由社群提供，個別歌曲可能略有誤差，可用「歌詞時間微調」校正。點任一句歌詞可以跳到那個位置。'));
+  openSheet(b);
+}
+function openSheet(node) { $('#sheetBody').replaceChildren(node); app.classList.add('sheet-open'); $('#sheet').scrollTop = 0; }
+function closeSheet() { app.classList.remove('sheet-open'); }
+
+/* ════════════════ 示範模式（原創示範歌曲） ════════════════ */
+const DEMO_LRC = `[00:00.60]詞：Lumen　曲：Lumen
+[00:06.20]夜色把城市 調成了低音
+[00:06.20]The night turns the city down to bass
+[00:11.00]儀表板的光 落在你眼底
+[00:11.00]Dashboard glow resting in your eyes
+[00:15.80]沿著海岸線 我們慢慢開
+[00:15.80]Down the coastline, taking it slow
+[00:20.40]收音機裡 那首歌還沒唱完
+[00:20.40]The song on the radio isn't over yet
+[00:25.80]
+[00:32.00]別問終點 會在哪裡
+[00:32.00]Don't ask where the road will end
+[00:36.40]風會記得 我們的名字
+[00:36.40]The wind will remember our names
+[00:41.00]每一盞路燈 都在倒數
+[00:41.00]Every streetlight counting down
+[00:45.60]把今晚 開成永遠
+[00:45.60]Drive tonight into forever
+[00:50.40]<00:50.40>Drive <00:51.00>slow, <00:51.90>let <00:52.30>the <00:52.60>night <00:53.20>un<00:53.60>fold<00:54.50>
+[00:55.00]<00:55.00>Every <00:55.70>light <00:56.30>becomes <00:57.10>a <00:57.40>star<00:58.60>
+[00:59.40]流光 流光 帶我回家
+[00:59.40]Streams of light, carry me home
+[01:04.20]
+[01:10.00]流光 流光 帶我回家
+[01:10.00]Streams of light, carry me home
+[01:15.00]`;
+const demo = {
+  active: false,
+  start() {
+    this.active = true; clearTimeout(pollTimer);
+    $('#badge').hidden = false; app.classList.add('demo-on');
+    $('#badgeBtn').textContent = FRAMED ? '部署說明' : '連接 Spotify';
+    pb.reset();
+    applyPlayback({ item: { id: DEMO_ID, name: '流光 Lumen', artists: [{ name: 'Lumen 示範' }], album: { name: 'Night Drive', images: [] }, duration_ms: 80000 }, is_playing: true, progress_ms: 0, currently_playing_type: 'track' }, 0, performance.now());
+    enterPlayer();
+  },
+  stop() { if (!this.active) return; this.active = false; $('#badge').hidden = true; app.classList.remove('demo-on'); pb.reset(); LV.state('idle'); },
+  tick(now) { if (pb.playing && pos(now) >= pb.duration - 5) { pb.progress = 0; pb.at = now; } },
+  ctrl(a) {
+    if (a === 'toggle') { pb.progress = pos(); pb.at = performance.now(); pb.playing = !pb.playing; onPlayState(); }
+    else if (a === 'next' || a === 'prev') seekTo(0);
+  },
+};
+
+/* ════════════════ 視圖切換 ════════════════ */
+function showSetup() { app.dataset.view = 'setup'; pairing.start(); }
+function enterPlayer() {
+  pairing.stop(); app.dataset.view = 'player';
+  if (!pb.item && !demo.active) LV.state('connecting');
+  requestAnimationFrame(() => LV.relayout(true));
+  if (!demo.active) schedulePoll(0);
+}
+let clockTimer = 0;
+function tickClock() {
+  clearInterval(clockTimer);
+  const f = () => {
+    if (app.dataset.ly !== 'idle') return clearInterval(clockTimer);
+    const d = new Date();
+    $('#clock').textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+    $('#date').textContent = d.toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
+  };
+  f(); clockTimer = setInterval(f, 1000);
+}
+
+/* ════════════════ 主迴圈 ════════════════ */
+const fpsMon = {
+  n: 0, acc: 0, bad: 0, last: 0,
+  tick(now) {
+    if (this.last) { const dt = now - this.last; if (dt < 250) { this.acc += dt; this.n++; } }
+    this.last = now;
+    if (this.n < 90) return;
+    const avg = this.acc / this.n; this.n = this.acc = 0;
+    this.bad = avg > 27 ? this.bad + 1 : Math.max(0, this.bad - 1);
+    if (this.bad >= 2 && prefs.quality === 'auto' && !autoEco) { autoEco = true; updateQuality(); toast('已自動切換為「流暢」畫面效果'); }
+  },
+};
+let lastSec = -1;
+function loop(now) {
+  requestAnimationFrame(loop);
+  aurora.draw(now);
+  if (app.dataset.view !== 'player') { fpsMon.last = 0; return; }
+  fpsMon.tick(now);
+  if (demo.active) demo.tick(now);
+  const p = pos(now);
+  LV.update(p + prefs.offset);
+  const d = pb.duration;
+  $('#bar').style.transform = `scaleX(${d ? clamp(p / d, 0, 1).toFixed(4) : 0})`;
+  const s = Math.floor(p / 1000);
+  if (s !== lastSec) { lastSec = s; $('#tCur').textContent = fmt(p); $('#tDur').textContent = fmt(d); }
+}
+
+/* ════════════════ 事件 ════════════════ */
+function bind() {
+  $('#btnDemo').onclick = () => demo.start();
+  $('#btnDirect').onclick = () => openGuide(true);
+  $('#btnGuide').onclick = () => openGuide(false);
+  $('#badgeBtn').onclick = () => { if (FRAMED) openGuide(false); else { demo.stop(); showSetup(); } };
+  $('#sheetBack').onclick = closeSheet; $('#sheetX').onclick = closeSheet;
+  $('#hud').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; e.stopPropagation(); act(b.dataset.act); showHud(true); });
+  $('#player').addEventListener('click', e => {
+    const line = e.target.closest('.line');
+    if (line && LV.mode === 'synced' && !line.classList.contains('credit')) {
+      const it = LV.items[+line.dataset.i];
+      if (it) { seekTo(Math.max(0, it.t - prefs.offset - 250)); line.classList.remove('tap'); void line.offsetWidth; line.classList.add('tap'); }
+      return;
+    }
+    showHud(!$('#hud').classList.contains('show'));
+  });
+  addEventListener('keydown', e => {
+    if (app.dataset.view !== 'player' || e.target.tagName === 'INPUT') return;
+    if (e.key === ' ') { e.preventDefault(); act('toggle'); }
+    else if (e.key === 'ArrowRight') act('next'); else if (e.key === 'ArrowLeft') act('prev');
+    else if (e.key === 'ArrowUp') act('off+'); else if (e.key === 'ArrowDown') act('off-');
+    else if (e.key === 'Escape') closeSheet();
+  });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && auth && !demo.active && app.dataset.view === 'player') schedulePoll(0); });
+  let rt = 0; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => LV.relayout(true), 150); });
+  document.fonts?.addEventListener?.('loadingdone', () => LV.relayout(true));
+  document.fonts?.ready?.then(() => LV.relayout(true));
+  matchMedia('(prefers-color-scheme: light)').addEventListener?.('change', () => { if (prefs.theme === 'auto') aurora.themeChanged(); });
+}
+
+/* ════════════════ 啟動 ════════════════ */
+async function boot() {
+  bind(); applyPrefs(); requestAnimationFrame(loop);
+  const cb = await handleCallback();
+  if (cb) {
+    if (cb.mode === 'pair') {
+      if (cb.error || !cb.pair) { phoneView('error', { msg: cb.error || '配對資訊遺失，請回到車上重新掃描', pair: cb.pair }); return; }
+      try { await sendToCar(cb.pair, cb.cid, cb.tokens); } catch (e) { phoneView('error', { msg: '傳送到車上失敗：' + e.message, pair: cb.pair }); }
+      return;
+    }
+    if (cb.error) toast(cb.error, 5000);
+    else { saveTokens(cb.cid, cb.tokens); enterPlayer(); return; }
+  }
+  const hp = location.hash.match(/^#p=([\w-]{8,40})\.([\w-]{40,50})$/);
+  if (hp) { const pair = { id: hp[1], key: hp[2] }; history.replaceState(null, '', REDIRECT_URI); phoneView('form', { pair }); return; }
+  if (location.hash === '#demo' || FRAMED) { demo.start(); return; }
+  if (auth?.rt) { enterPlayer(); return; }
+  showSetup();
+}
+window.Lumen = { pb, LV, demo, prefs, pairing, seekTo, parseLRC, buildModel, tokenize, cleanTitle, scoreRec, looksSimplified };
+boot();
+})();
+</script>
+</body>
+</html>
